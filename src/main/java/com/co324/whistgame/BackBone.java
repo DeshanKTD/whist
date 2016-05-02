@@ -3,7 +3,7 @@ package com.co324.whistgame;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+
 
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 
 public class BackBone extends HttpServlet{
@@ -47,7 +50,16 @@ public class BackBone extends HttpServlet{
 		if(checkSession(request,response)){
 			processRequset(request,response);
 		}
-			
+	}
+	
+	//handle ajax
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException 
+	{
+		System.out.print("post req");
+		if(!checkSession(request,response)){
+			System.out.println(request.getParameter("card"));
+		}
 		
 	}
 

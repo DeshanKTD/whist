@@ -33,6 +33,17 @@ public class Deck {
 		}
 	}
 	
+	
+	//decode the cardName to get card value
+	public int decodeToCard(String card){
+		String cardName = card.split("/")[1];
+		cardName = cardName.split(".")[0];
+		int type = Integer.parseInt(cardName.split("_")[0]);
+		int val = Integer.parseInt(cardName.split("_")[1])-1;
+		
+		return type*13+val;
+	}
+	
 	//initate players hand
 	private void initiatePlayerHand(){
 		for(int i=0;i<4;i++){
@@ -56,7 +67,10 @@ public class Deck {
 		}
 	}
 	
-	
+	//remove card from hand
+	public void removeCard(int player,int card){
+		
+	}
 	
 	
 	//return for game handle class

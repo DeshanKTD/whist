@@ -2,14 +2,38 @@
 <html>
 <head>
 <style>
-div.position {
-    background-color: yellow;
-	width:80px;height:100px;padding:10px;border:1px solid #aaaaaa;
-	display:inline-block;
-}
+	div.position {
+	    background-color: yellow;
+		width:80px;height:100px;padding:10px;border:1px solid #aaaaaa;
+		display:inline-block;
+	}
+	
+	.center {
+	    margin: auto;
+	    width: 40%;
+	    padding: 10px;
+	}
+	h3 {
+		font-family: 'Avant Garde', Avantgarde, 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+		font-size: 24px;
+		font-style: normal;
+		font-variant: normal;
+		font-weight: 500;
+		line-height: 26.4px;
+	}
+	
+	.applicationmessages {
+		font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+		font-size: 18px;
+		font-style: normal;
+		font-variant: normal;
+		font-weight: 400;
+		line-height: 18.5714px;
+	}
 </style>
 
 <script src="knockout-3.4.0.js"></script>
+<script src="jquery-1.12.3.js"></script>
 </head>
 <body>
 
@@ -66,7 +90,15 @@ Hint -  you can use JQuery and Ajax here.
 
 function PlayCard(card)
 {
-	alert(card + " is played by the user.\nWe will set this in next iteration");
+	  	var sendData = {"card":card};
+	  	alert(sendData);
+	  	$.ajax({
+	  	    type: 'POST',
+	  	    url: '\whist',
+	  	    data: sendData,
+	  	    success: function(resp) { }
+	  	});
+
 }
 /******************************************************/
 
@@ -74,12 +106,12 @@ function PlayCard(card)
 
 
 <h3>Network card game</h3>
-<span data-bind="text: message"></span> 
+<span data-bind="text: message" class="applicationmessages"></span> 
 <br/>
 <div id="play"></div>
 <!--cards-->
 <br/>
-<div data-bind="visible: shouldShowPlayedCards">
+<div data-bind="visible: shouldShowPlayedCards" id="playingBoard" class="center">
 
 	<div class = "position" style = "margin-left: 110px;" >
 	<img data-bind="attr: { src: card2 }" >
