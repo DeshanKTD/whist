@@ -10,6 +10,7 @@ public class Deck {
 	//set of cards by its values
 	private ArrayList<Integer> setOfCards = new ArrayList<Integer>();
 	//the each players hand
+	@SuppressWarnings("unchecked")
 	private ArrayList<Integer>[] playersHand = new ArrayList[4];
 	
 	
@@ -68,8 +69,45 @@ public class Deck {
 	}
 	
 	//remove card from hand
-	public void removeCard(int player,int card){
+	public void removeCard(int player,String card){
+		int cardVal = decodeToCard(card);
+		int i=0;
+		for(i=0;i<this.playersHand[player].size();i++){
+			if(this.playersHand[player].get(i)==cardVal){
+				break;
+			}
+		}
+		this.playersHand[player].remove(i);
 		
+	}
+
+	
+	//check the played card is with the player
+	public boolean checkValidCard(int player,String card){
+		Integer cardVal = decodeToCard(card);
+		if(this.playersHand[player].contains(cardVal)){
+			return true;
+		}
+		return false;
+		
+	}
+	
+	
+	//check player has cards from current type
+	public boolean checkCardsInCorrectType(String currentType,String playedType, int player){
+		int currenttype = decodeToCard(currentType)/13;
+		int playedtype = decodeToCard(playedType)/13;
+		
+		if(currenttype == playedtype){
+			return true;
+		}
+		else{
+			for(int i=0;i<this.playersHand[player].size();i++){
+				if(this.playersHand[i].get(i)/13 == currenttype)
+					return false;
+			}
+			return true;
+		}
 	}
 	
 	

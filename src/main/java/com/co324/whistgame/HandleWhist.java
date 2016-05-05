@@ -42,42 +42,22 @@ public class HandleWhist extends Thread{
 		boolean set3 = false;
 		boolean set4 = false;
 		
-		//-----------------------------hard coded---------------------------//
-		//----------------------------check for AccessCheck to handle this----//
-		//need to fix this to work with enum
+		
 		while(true){
 			if(BackBone.counter==1 && set1==false){
-				checkConnects.onConnect(players);
-				SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-						false,"One player connected, 3 more to connect....",false,false,0);
-				BackBone.sendMessage(BackBone.playerConnections.get(players[0]), message.getJSONString());
+				checkConnects = checkConnects.onConnect(players);
 				set1=true;
 			}
 			else if(BackBone.counter==2 && set2==false){
-				checkConnects.onConnect(players);
-				SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-						false,"Two players connected, 2 more to connect.....",false,false,0);
-				for(int i=0;i<2;i++){
-					BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
-				}
+				checkConnects = checkConnects.onConnect(players);
 				set2=true;
 			}
 			else if(BackBone.counter==3 && set3==false){
-				checkConnects.onConnect(players);
-				SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-						false,"Three players connected, one more to connect.....",false,false,0);
-				for(int i=0;i<3;i++){
-					BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
-				}
+				checkConnects = checkConnects.onConnect(players);
 				set3=true;
 			}
 			else if(BackBone.counter==4 && set4==false){
-				checkConnects.onConnect(players);
-				SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-						false,"All players connected, lets start .......",false,false,0);
-				for(int i=0;i<4;i++){
-					BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
-				}
+				checkConnects = checkConnects.onConnect(players);
 				set4=true;
 				break;
 			}
@@ -106,10 +86,9 @@ public class HandleWhist extends Thread{
 		}
 	}
 	
-	
-	public AccessCheck getAccessStatus(){
-		return checkConnects;
-	}
+	///////////////////////////////////////////////////////////////////
+								//Game logic//
+	//////////////////////////////////////////////////////////////////
 	
 	
 	

@@ -132,9 +132,7 @@ public class BackBone extends HttpServlet{
 	// Start asynchronous context and add listeners to remove it in case of errors
 	
 	private void checkAsync(HttpServletRequest request ){
-		
-		
-		
+			
 		final AsyncContext ac = request.startAsync();
 		ac.addListener(new AsyncListener(){
 			 public void onComplete(AsyncEvent event) throws IOException {
