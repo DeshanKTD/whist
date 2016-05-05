@@ -86,11 +86,43 @@ public class HandleWhist extends Thread{
 		}
 	}
 	
+	
 	///////////////////////////////////////////////////////////////////
 								//Game logic//
 	//////////////////////////////////////////////////////////////////
 	
-	
+	public int checkWinTrick(){
+		int currentType = trickCards[trickWinPlayer]/13;
+		int triumph = deck.getTriumph()/13;
+		int winner=0;
+		for(int i=0;i<4;i++){
+			if(this.trickCards[i]/13==triumph){
+				if(this.trickCards[i]==triumph*13){
+					return i;
+				}
+				else if(this.trickCards[winner]/13==triumph){
+					if(this.trickCards[i]>this.trickCards[winner]){
+						winner = i;
+					}
+				}
+				else{
+					winner=i;
+				}
+			}
+			
+			else if(this.trickCards[i]/13==currentType){
+				if(this.trickCards[i]==currentType*13){
+					winner = i;
+				}
+				else if(this.trickCards[winner]/13==currentType){
+					if(this.trickCards[i]>this.trickCards[winner]){
+						winner = i;
+					}
+				}
+			}
+		}
+		return winner;
+	}
 	
 	
 }
