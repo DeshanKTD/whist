@@ -87,7 +87,7 @@ public class Deck {
 	public boolean checkValidCard(int player,String card){
 		int cardVal = decodeToCard(card);
 		if(this.playersHand[player].contains(cardVal)){
-			System.out.println("valid card");
+			//System.out.println("valid card");
 			return true;
 		}
 		return false;

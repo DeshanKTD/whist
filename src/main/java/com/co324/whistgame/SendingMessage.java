@@ -52,22 +52,18 @@ public class SendingMessage {
 		this.message =message;
 		this.currentScore = handle.getTrickWins()[player];
 		
-		if(handle.getTrickCards()[0]>-1){
-			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+3)%4]);
-		}
-		if(handle.getTrickCards()[1]>-1){
-			this.card2=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+2)%4]);
-		}
-		if(handle.getTrickCards()[2]>-1){
-			this.card3=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+1)%4]);
-		}
-		if(handle.getTrickCards()[3]>-1){
-			this.card4=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[player]);
-		}
+		
+		this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+3)%4]);
+		this.card2=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+2)%4]);
+		this.card3=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+1)%4]);
+		this.card4=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[player]);
+		
 		this.triumph = handle.getDeck().getSetOfCardNames().get(handle.getDeck().getTriumph());
 		this.player = handle.playermap.get(player);
 		
 	}
+	
+	
 	
 	public SendingMessage(String message){
 		this.cards = new ArrayList<Integer>();

@@ -55,11 +55,9 @@ public class BackBone extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException 
 	{
-		HttpSession session = request.getSession(  );
 		System.out.println("post req");
 		if(!checkSession(request,response)){
-			System.out.println(request.getParameter("card"));
-			this.handleGame.setRequestPlayer((String) session.getAttribute("userID"));
+			this.handleGame.setRequestPlayer(this.connection);
 			this.handleGame.setCurrentPlayerCard(request.getParameter("card"));
 			this.handleGame.playingGame();
 		}
@@ -184,6 +182,8 @@ public class BackBone extends HttpServlet{
 			return false;
 		}
 	}
+
+	
 	
 }
 

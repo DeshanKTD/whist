@@ -1,28 +1,49 @@
 package com.co324.whistgame;
 
 
+/*
+ * This class handle the total whist game currently
+ * The game logic and message api is implemented in here
+ * The all varibales needed for game to play are in here
+ */
+
 import java.util.HashMap;
 
 
 public class HandleWhist extends Thread{
+	
+	//maps to map player to its numerical values and name
 	public HashMap<Integer,String> playermap = new HashMap<Integer,String>();
 	public HashMap<String,Integer> playermap2 = new HashMap<String,Integer>();
-	
+	//player names
 	private String players[] = {"playerOne","playerTwo","playerThree","playerFour"};
-	private int[] trickCards = new int[4];
-	private int[] trickWins = new int[4];
-	private int startedPlayer;
-	private int trickWinPlayer;
-	private int currentPlayingPlayer;
-	private SendingMessage[] playerMessages = new SendingMessage[4];
-	private String currentlyPlayedCard;
-	private String requestPlayer;
-	private boolean allConnected;
 	
-	private AccessCheck checkConnects = AccessCheck.ZEROCONNECTED;
-	private CardPlay play;
 	
-	private Deck deck;
+	
+	
+	
+	private int[] trickCards = new int[4];							//cards on the board
+	private int[] trickWins = new int[4];							//tricks win by each player
+	private int startedPlayer;										//game started player
+	private int trickWinPlayer;										//final trick winner
+	private int currentPlayingPlayer;								//currently playing player
+	private SendingMessage[] playerMessages = new SendingMessage[4];//messages that sends to each player
+	private String currentlyPlayedCard;								//finaly played card
+	private String requestPlayer;									//finaly player which requested card play
+	private boolean allConnected;									//check all connected
+	
+	
+	
+	
+	private AccessCheck checkConnects = AccessCheck.ZEROCONNECTED;	//player connect state change
+	private CardPlay play;											//game play state change
+	
+	
+	
+	private Deck deck;				//the all about deck
+	
+	
+	
 	
 	public HandleWhist(){
 		deck = new Deck();
@@ -71,7 +92,11 @@ public class HandleWhist extends Thread{
 		if(this.currentlyPlayedCard==null){
 			this.currentlyPlayedCard=card;
 		}
-		System.out.println("Current Player Card");
+	}
+	
+	//reset currentplayer card
+	synchronized public void setCurrentPlayerCard(){
+		this.currentlyPlayedCard=null;
 	}
 	
 	//get currentplayercard
@@ -84,8 +109,13 @@ public class HandleWhist extends Thread{
 		if(this.requestPlayer==null){
 			this.requestPlayer=player;
 		}
-		System.out.println("requested player assined");
 	}
+	
+	//reset request player
+	synchronized public void setRequestPlayer(){
+		this.requestPlayer=null;
+	}
+	
 	
 	//get request player
 	synchronized public String getRequestPlayer(){
@@ -162,6 +192,7 @@ public class HandleWhist extends Thread{
 	synchronized public void setSendingMessage(String message){
 		for(int i=0;i<4;i++){
 			this.playerMessages[i] = new SendingMessage(this,i,message);
+			//System.out.println(this.playerMessages[i].getJSONString());
 		}
 	}
 	
@@ -201,7 +232,7 @@ public class HandleWhist extends Thread{
 	
 	
 	///////////////////////////////////////////////////////////////////
-								//Game logic//
+		//Game logic//
 	//////////////////////////////////////////////////////////////////
 	
 	
@@ -251,8 +282,7 @@ public class HandleWhist extends Thread{
 			return;
 		}
 		play = play.onPlay(this);
-		System.out.println("played");
-		System.out.println(play);
+		
 	}
 	
 	public boolean checkWinner(){
