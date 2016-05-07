@@ -81,6 +81,9 @@ public class SendingMessage {
 		this.triumph = null;
 	}
 	
+	
+	
+	//get json string
 	public String getJSONString(){
 		JSONObject object = new JSONObject();
 		try {
@@ -107,7 +110,7 @@ public class SendingMessage {
 	
 	
 	
-	
+	//make a json array
 	private JSONArray getJArray(ArrayList<Integer> cards){
 		JSONArray array = new JSONArray();
 		JSONObject set;

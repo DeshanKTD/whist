@@ -4,31 +4,31 @@ public enum CardPlay {
 	
 	
 	PONECHANCE{
-		CardPlay onPlay(HandleWhist handle){
-			handle.setSendingMessage("PlayerOne chance to play");
+		CardPlay onPlay(HandleWhist handle){	
+			handle.setSendingMessage("PlayerOne chance to play");		//send all which player should player
 			handle.sendToAll();
 			
 			
 			if(handle.getRequestPlayer().equals("playerOne")){
-				if(handle.getDeck().checkValidCard(0, handle.getCurrentPlayerCard()))	{
+				if(handle.getDeck().checkValidCard(0, handle.getCurrentPlayerCard()))	{ //check whether correct player played corrrect card
 					
 					
 					
-					handle.getTrickCards()[0]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());
-					handle.getDeck().removeCard(0, handle.getCurrentPlayerCard());
-					handle.setCurrentPlayerCard();
-					handle.setRequestPlayer();
+					handle.getTrickCards()[0]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());	//put played card to the table
+					handle.getDeck().removeCard(0, handle.getCurrentPlayerCard());		//remove played card from player hand
+					handle.setCurrentPlayerCard();										//reset current player card
+					handle.setRequestPlayer();											//reset current player
 					
-					if((handle.getTrickWinnter()+3)%4==0){
-						int player = handle.checkWinTrick();
-						handle.setTrickWinner(player);
-						handle.getTrickWins()[player]++;
-						handle.resetTrickCards();
-						handle.setSendingMessage("Player "+handle.playermap.get(player)+" won the trick");
+					if((handle.getTrickWinnter()+3)%4==0){								//if this is final player in trick
+						int player = handle.checkWinTrick();							//get the winner
+						handle.setTrickWinner(player);									
+						handle.increaseTrickWins(player);								//update trick wins for player that won
+						handle.resetTrickCards();										//clean playing table
+						handle.setSendingMessage("Player "+handle.playermap.get(player)+" won the trick");	//broadcast all about winner
 						handle.sendToAll();
 						
 						
-						try {
+						try {															//wait for 3 sec to see winner
 							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
@@ -63,10 +63,11 @@ public enum CardPlay {
 					return PTWOCHANCE;
 				}
 				
-				handle.setCurrentPlayerCard();
-				handle.setRequestPlayer();
+				
 				
 			}
+			handle.setCurrentPlayerCard();
+			handle.setRequestPlayer();
 			return PONECHANCE;
 			
 		}
@@ -94,7 +95,7 @@ public enum CardPlay {
 					if((handle.getTrickWinnter()+3)%4==1){
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
-						handle.getTrickWins()[player]++;
+						handle.increaseTrickWins(player);
 						handle.resetTrickCards();
 						handle.setSendingMessage("Player "+handle.playermap.get(player)+" won the trick");
 						handle.sendToAll();
@@ -134,9 +135,10 @@ public enum CardPlay {
 					handle.sendToAll();
 					return PTHREECHANCE;
 				}
-				handle.setCurrentPlayerCard();
-				handle.setRequestPlayer();
+				
 			}
+			handle.setCurrentPlayerCard();
+			handle.setRequestPlayer();
 			return PTWOCHANCE;
 			
 		}
@@ -162,7 +164,7 @@ public enum CardPlay {
 					if((handle.getTrickWinnter()+3)%4==2){
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
-						handle.getTrickWins()[player]++;
+						handle.increaseTrickWins(player);
 						handle.resetTrickCards();
 						handle.setSendingMessage("Player "+handle.playermap.get(player)+" won the trick");
 						handle.sendToAll();
@@ -203,9 +205,10 @@ public enum CardPlay {
 					handle.sendToAll();
 					return PFOURCHANCE;
 				}
-				handle.setCurrentPlayerCard();
-				handle.setRequestPlayer();
+				
 			}
+			handle.setCurrentPlayerCard();
+			handle.setRequestPlayer();
 			return PTHREECHANCE;
 			
 		}
@@ -231,10 +234,10 @@ public enum CardPlay {
 					
 					
 					if((handle.getTrickWinnter()+3)%4==3){
-						System.out.println("Trick winner entered");
+						
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
-						handle.getTrickWins()[player]++;
+						handle.increaseTrickWins(player);
 						handle.resetTrickCards();
 						handle.setSendingMessage("Player "+handle.playermap.get(player)+" won the trick");
 						handle.sendToAll();
@@ -275,9 +278,10 @@ public enum CardPlay {
 					handle.sendToAll();
 					return PONECHANCE;
 				}
-				handle.setCurrentPlayerCard();
-				handle.setRequestPlayer();
+				
 			}
+			handle.setCurrentPlayerCard();
+			handle.setRequestPlayer();
 			return PFOURCHANCE;
 			
 		}

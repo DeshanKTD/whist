@@ -135,6 +135,7 @@ public class HandleWhist extends Thread{
 	//set trickWinPlayer
 	synchronized public void setTrickWinner(int player){
 		this.trickWinPlayer = player;
+		System.out.println("set trick win: " + this.trickWinPlayer);
 	}
 	
 	//get StartedPlayer
@@ -160,6 +161,12 @@ public class HandleWhist extends Thread{
 		for(int i=0;i<4;i++){
 			this.trickWins[i]=-1;
 		}
+	}
+	
+	//set trick win
+	public void increaseTrickWins(int player){
+		this.trickWins[player] = this.trickWins[player]+1;
+		System.out.println(this.trickWins[player] + " --- trick win");
 	}
 	
 	//temporary hard coded
