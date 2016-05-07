@@ -56,11 +56,12 @@ public class BackBone extends HttpServlet{
 			throws ServletException, IOException 
 	{
 		HttpSession session = request.getSession(  );
-		System.out.print("post req");
+		System.out.println("post req");
 		if(!checkSession(request,response)){
-			this.handleGame.setRequestPlayer((String) session.getAttribute("userID"));
 			System.out.println(request.getParameter("card"));
+			this.handleGame.setRequestPlayer((String) session.getAttribute("userID"));
 			this.handleGame.setCurrentPlayerCard(request.getParameter("card"));
+			this.handleGame.playingGame();
 		}
 		
 	}
@@ -87,6 +88,9 @@ public class BackBone extends HttpServlet{
 		}
 		else{
 			System.out.println("session exists");
+			System.out.println(connection);
+			this.handleGame.requestUpdate(this.connection);
+			
 			return false;
 		}
 		
@@ -124,6 +128,7 @@ public class BackBone extends HttpServlet{
 			writer = async.getResponse().getWriter();
 			writer.write("data: "+ message +"\n\n");
 			writer.flush();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -140,18 +145,19 @@ public class BackBone extends HttpServlet{
 	private void checkAsync(HttpServletRequest request ){
 			
 		final AsyncContext ac = request.startAsync();
+		ac.setTimeout(900000000);
 		ac.addListener(new AsyncListener(){
 			 public void onComplete(AsyncEvent event) throws IOException {
-				 	playerConnections.remove(connection);
+				 //	playerConnections.remove(connection);
 	         }
 	         public void onError(AsyncEvent event) throws IOException {
-	        	 	playerConnections.remove(connection);
+	        	 	//playerConnections.remove(connection);
 	         }
 	         public void onStartAsync(AsyncEvent event) throws IOException {
 	                // Do nothing
 	         }
 	         public void onTimeout(AsyncEvent event) throws IOException {
-	            	playerConnections.remove(connection);
+	            	//playerConnections.remove(connection);
 	         }
 		});
 		

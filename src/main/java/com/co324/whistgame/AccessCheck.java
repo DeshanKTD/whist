@@ -1,62 +1,56 @@
 package com.co324.whistgame;
 
-import java.util.ArrayList;
 
 public enum AccessCheck {
 	ZEROCONNECTED{
-		AccessCheck onConnect(String[] players){
+		AccessCheck onConnect(HandleWhist handle){
 			System.out.println("One player connected");
-			SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-					false,"One player connected, 3 more to connect....",false,false,0);
-			BackBone.sendMessage(BackBone.playerConnections.get(players[0]), message.getJSONString());
+			handle.setInitialMessage("One player conneceted, Three more to Connect...");
+			handle.requestUpdate(handle.playermap.get(0));
 			return ONECONNECTED;
 		}
 	},
 	ONECONNECTED{
-		AccessCheck onConnect(String[] players){
+		AccessCheck onConnect(HandleWhist handle){
 			System.out.println("TWO player connected");
-			SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-					false,"Two players connected, 2 more to connect.....",false,false,0);
+			handle.setInitialMessage("Two Players conneceted. Two more to Connect....");
 			for(int i=0;i<2;i++){
-				BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
+				handle.requestUpdate(handle.playermap.get(i));
 			}
 			return TWOCONNECTED;
 		}
 	},
 	TWOCONNECTED{
-		AccessCheck onConnect(String[] players){
+		AccessCheck onConnect(HandleWhist handle){
 			System.out.println("THREE player connected");
-			SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-					false,"Three players connected, one more to connect.....",false,false,0);
+			handle.setInitialMessage("Three Players conneceted. One more to Connect....");
 			for(int i=0;i<3;i++){
-				BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
+				handle.requestUpdate(handle.playermap.get(i));
 			}
 			return THREECONNECTED;
 		}
 	},
 	THREECONNECTED{
-		AccessCheck onConnect(String[] players){
+		AccessCheck onConnect(HandleWhist handle){
 			System.out.println("FOUR player connected");
-			SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-					false,"All players connected, lets start .......",false,false,0);
+			handle.setInitialMessage("All players Connected.. lets start....");
 			for(int i=0;i<4;i++){
-				BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
+				handle.requestUpdate(handle.playermap.get(i));
 			}
 			return FOURCONNECTED;
 		}
 	},
 	FOURCONNECTED{
-		AccessCheck onConnect(String[] players){
+		AccessCheck onConnect(HandleWhist handle){
 			System.out.println("FOUR player connected");
-			SendingMessage message = new SendingMessage(new Deck(),new ArrayList<Integer>(),new String[4],false,
-					false,"All players connected, game is going.....",false,false,0);
+			handle.setInitialMessage("All players Connected.. lets start....");
 			for(int i=0;i<4;i++){
-				BackBone.sendMessage(BackBone.playerConnections.get(players[i]), message.getJSONString());
+				handle.requestUpdate(handle.playermap.get(i));
 			}
 			return FOURCONNECTED;
 		}
 	};
 	
-	abstract AccessCheck onConnect(String[] players);
+	abstract AccessCheck onConnect(HandleWhist handle);
 	
 }

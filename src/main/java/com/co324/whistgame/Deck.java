@@ -37,8 +37,9 @@ public class Deck {
 	
 	//decode the cardName to get card value
 	public int decodeToCard(String card){
+		
 		String cardName = card.split("/")[1];
-		cardName = cardName.split(".")[0];
+		cardName = cardName.split("\\.")[0];
 		int type = Integer.parseInt(cardName.split("_")[0]);
 		int val = Integer.parseInt(cardName.split("_")[1])-1;
 		
@@ -84,8 +85,9 @@ public class Deck {
 	
 	//check the played card is with the player
 	public boolean checkValidCard(int player,String card){
-		Integer cardVal = decodeToCard(card);
+		int cardVal = decodeToCard(card);
 		if(this.playersHand[player].contains(cardVal)){
+			System.out.println("valid card");
 			return true;
 		}
 		return false;

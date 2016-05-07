@@ -43,6 +43,7 @@ public class SendingMessage {
 	}
 	
 	public SendingMessage(HandleWhist handle,int player,String message){
+		this.deck = handle.getDeck();
 		this.cards = handle.getDeck().getPlayersHand()[player];
 		this.showCards = true;
 		this.showHand = true;
@@ -52,23 +53,37 @@ public class SendingMessage {
 		this.currentScore = handle.getTrickWins()[player];
 		
 		if(handle.getTrickCards()[0]>-1){
-			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[0]);
+			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+3)%4]);
 		}
 		if(handle.getTrickCards()[1]>-1){
-			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[1]);
+			this.card2=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+2)%4]);
 		}
 		if(handle.getTrickCards()[2]>-1){
-			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[2]);
+			this.card3=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[(player+1)%4]);
 		}
 		if(handle.getTrickCards()[3]>-1){
-			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[3]);
+			this.card4=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[player]);
 		}
 		this.triumph = handle.getDeck().getSetOfCardNames().get(handle.getDeck().getTriumph());
 		this.player = handle.playermap.get(player);
 		
 	}
 	
-	
+	public SendingMessage(String message){
+		this.cards = new ArrayList<Integer>();
+		this.showCards = false;
+		this.showHand = false;
+		this.showLeaveGame = false;
+		this.showNewGame = false;
+		this.currentScore = 0;
+		this.message = message;
+		this.player = "not assigned";
+		this.card1 = null;
+		this.card2 = null;
+		this.card3 = null;
+		this.card4 = null;
+		this.triumph = null;
+	}
 	
 	public String getJSONString(){
 		JSONObject object = new JSONObject();
@@ -100,7 +115,6 @@ public class SendingMessage {
 	private JSONArray getJArray(ArrayList<Integer> cards){
 		JSONArray array = new JSONArray();
 		JSONObject set;
-		
 		for(int i=0;i<cards.size();i++){
 			set = new JSONObject();
 			try {

@@ -13,15 +13,15 @@ public enum GameFlow {
 			handle.getDeck().distributeDeck();
 			System.out.println("Deck Distributed");
 			
-			return PLAYING;
+			return WAITING;
 		}
-	},
-	PLAYING{
-		
-	},
-	END{
-		
 	};
+//	PLAYING{
+//		
+//	},
+//	END{
+//		
+//	};
 	
 	abstract GameFlow onFlow(HandleWhist handle);
 	

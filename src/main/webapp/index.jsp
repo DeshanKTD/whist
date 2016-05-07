@@ -91,7 +91,7 @@ Hint -  you can use JQuery and Ajax here.
 function PlayCard(card)
 {
 	  	var sendData = {"card":card};
-	  	alert(sendData);
+	  //	alert(sendData);
 	  	$.ajax({
 	  	    type: 'POST',
 	  	    url: '\whist',

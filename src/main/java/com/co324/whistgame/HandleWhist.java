@@ -1,6 +1,6 @@
 package com.co324.whistgame;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 
 
@@ -17,19 +17,25 @@ public class HandleWhist extends Thread{
 	private SendingMessage[] playerMessages = new SendingMessage[4];
 	private String currentlyPlayedCard;
 	private String requestPlayer;
+	private boolean allConnected;
 	
 	private AccessCheck checkConnects = AccessCheck.ZEROCONNECTED;
+	private CardPlay play;
+	
 	private Deck deck;
 	
 	public HandleWhist(){
 		deck = new Deck();
 		startedPlayer = 0;
+		trickWinPlayer = 0;
 		currentPlayingPlayer = 0;
 		currentlyPlayedCard = null;
 		requestPlayer = null;
 		for(int i=0;i<4;i++){
 			playermap.put(i, players[i]);
 			playermap2.put(players[i], i);
+			trickCards[i]=-1;
+			trickWins[i] =0;
 		}
 	}
 	
@@ -37,54 +43,22 @@ public class HandleWhist extends Thread{
 	
 	public void run(){
 		System.out.println("start Handle");
-		checkAllConnected();
+		this.allConnected=checkAllConnected();
 		System.out.println("shuffling....");
 		deck.shuffleDeck();
 		deck.distributeDeck();
 		System.out.println("deck distributed....");
-		tempMethodToDistributeCards();
+		System.out.println("game started");
+		this.setSendingMessage("Player One chance to Play");
+		this.sendToAll();
 	}
 	
+
 	
-	//check whether four players connected
-	public void checkAllConnected(){
-		boolean set1 = false;
-		boolean set2 = false;
-		boolean set3 = false;
-		boolean set4 = false;
-		
-		
-		while(true){
-			if(BackBone.counter==1 && set1==false){
-				checkConnects = checkConnects.onConnect(players);
-				set1=true;
-			}
-			else if(BackBone.counter==2 && set2==false){
-				checkConnects = checkConnects.onConnect(players);
-				set2=true;
-			}
-			else if(BackBone.counter==3 && set3==false){
-				checkConnects = checkConnects.onConnect(players);
-				set3=true;
-			}
-			else if(BackBone.counter==4 && set4==false){
-				checkConnects = checkConnects.onConnect(players);
-				set4=true;
-				break;
-			}
-			
-			//break operaion
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-		System.out.println("All connected....");
-		return;
-	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////
+	/// get set api
+	/////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	//get Deck
@@ -97,6 +71,7 @@ public class HandleWhist extends Thread{
 		if(this.currentlyPlayedCard==null){
 			this.currentlyPlayedCard=card;
 		}
+		System.out.println("Current Player Card");
 	}
 	
 	//get currentplayercard
@@ -109,6 +84,7 @@ public class HandleWhist extends Thread{
 		if(this.requestPlayer==null){
 			this.requestPlayer=player;
 		}
+		System.out.println("requested player assined");
 	}
 	
 	//get request player
@@ -124,6 +100,11 @@ public class HandleWhist extends Thread{
 	//get trickWinplayr
 	synchronized public int getTrickWinnter(){
 		return this.trickWinPlayer;
+	}
+	
+	//set trickWinPlayer
+	synchronized public void setTrickWinner(int player){
+		this.trickWinPlayer = player;
 	}
 	
 	//get StartedPlayer
@@ -155,22 +136,44 @@ public class HandleWhist extends Thread{
 	private void tempMethodToDistributeCards(){
 		for(int i=0;i<4;i++){
 			playerMessages[i]=new SendingMessage(this.deck,deck.getPlayersHand()[i],new String[4],
-					true,true,"PlayerOne Chance to play",false,false,0);
+					true,true,"lets play",false,false,0);
 			System.out.println(playerMessages[i].getJSONString());
 			BackBone.sendMessage(BackBone.playerConnections.get(players[i]), playerMessages[i].getJSONString());
 		}
 	}
 
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////////////
+		//message api
+	///////////////////////////////////////////////////////////////////////////////
+	
 	//config sending messges
-	public void setSendingMessage(String message){
+	synchronized public void setSendingMessage(String message){
 		for(int i=0;i<4;i++){
 			this.playerMessages[i] = new SendingMessage(this,i,message);
 		}
 	}
 	
+	//initalize message
+	synchronized public void setInitialMessage(String message){
+		for(int i=0;i<4;i++){
+			this.playerMessages[i] = new SendingMessage(message);
+		}
+	}
+	
 	//send messages to all
-	public void sendToAll(){
+	synchronized public void sendToAll(){
 		for(int i=0;i<4;i++){
 			BackBone.sendMessage(BackBone.playerConnections.get(this.playermap.get(i)),
 					this.playerMessages[i].getJSONString());
@@ -178,11 +181,21 @@ public class HandleWhist extends Thread{
 	}
 	
 	//send messages to selected
-	public void requestUpdate(String player){
+	synchronized public void requestUpdate(String player){
 		BackBone.sendMessage(BackBone.playerConnections.get(player),
 				this.playerMessages[this.playermap2.get(player)].getJSONString());
-			
+
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -190,6 +203,75 @@ public class HandleWhist extends Thread{
 	///////////////////////////////////////////////////////////////////
 								//Game logic//
 	//////////////////////////////////////////////////////////////////
+	
+	
+	//check whether four players connected
+	public boolean checkAllConnected(){
+		boolean set1 = false;
+		boolean set2 = false;
+		boolean set3 = false;
+		boolean set4 = false;
+		
+		
+		while(true){
+			if(BackBone.counter==1 && set1==false){
+				checkConnects = checkConnects.onConnect(this);
+				set1=true;
+			}
+			else if(BackBone.counter==2 && set2==false){
+				checkConnects = checkConnects.onConnect(this);
+				set2=true;
+			}
+			else if(BackBone.counter==3 && set3==false){
+				checkConnects = checkConnects.onConnect(this);
+				set3=true;
+			}
+			else if(BackBone.counter==4 && set4==false){
+				checkConnects = checkConnects.onConnect(this);
+				set4=true;
+				break;
+			}
+			
+			//break operaion
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		System.out.println("All connected....");
+		play = CardPlay.PONECHANCE;
+		return true;
+	}
+
+	public void playingGame(){
+		if(checkWinner()){
+			return;
+		}
+		play = play.onPlay(this);
+		System.out.println("played");
+		System.out.println(play);
+	}
+	
+	public boolean checkWinner(){
+		for(int i=0;i<4;i++){
+			if(this.trickWins[i]==10){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public int checkGameWinner(){
+		for(int i=0;i<4;i++){
+			if(this.trickWins[i]==10);
+				return i;
+		}
+		return -1;
+	}
+	
 	
 	public int checkWinTrick(){
 		int currentType = trickCards[trickWinPlayer]/13;
