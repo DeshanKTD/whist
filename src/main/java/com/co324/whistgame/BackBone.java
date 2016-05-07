@@ -2,8 +2,7 @@ package com.co324.whistgame;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.AsyncEvent;
@@ -31,7 +30,7 @@ public class BackBone extends HttpServlet{
 	private String connection = null;
 	private String players[] = {"playerOne","playerTwo","playerThree","playerFour"};
 	public static Object connectionLock = new Object();
-	public static HashMap<String, AsyncContext> playerConnections = new HashMap<String,AsyncContext>();
+	public static ConcurrentHashMap<String, AsyncContext> playerConnections = new ConcurrentHashMap<String,AsyncContext>();
 	
 	
 	public void init(ServletConfig config){
@@ -132,6 +131,10 @@ public class BackBone extends HttpServlet{
 	}
 	
 	
+	
+	
+	
+	
 	// Start asynchronous context and add listeners to remove it in case of errors
 	
 	private void checkAsync(HttpServletRequest request ){
@@ -160,6 +163,11 @@ public class BackBone extends HttpServlet{
 			//this.handleGame.getAccessStatus().onConnect(players);
 		}
 	}
+	
+	
+	
+	
+	
 	
 	//check whether all players are still connected
 	public static boolean checkPlayersOnline(){

@@ -1,15 +1,16 @@
 package com.co324.whistgame;
 
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+
 
 public class HandleWhist extends Thread{
-	public static ConcurrentHashMap<Integer,String> playermap = new ConcurrentHashMap<Integer,String>();
+	public HashMap<Integer,String> playermap = new HashMap<Integer,String>();
+	public HashMap<String,Integer> playermap2 = new HashMap<String,Integer>();
 	
 	private String players[] = {"playerOne","playerTwo","playerThree","playerFour"};
 	private int[] trickCards = new int[4];
 	private int[] trickWins = new int[4];
-	private int triumph;
 	private int startedPlayer;
 	private int trickWinPlayer;
 	private int currentPlayingPlayer;
@@ -28,6 +29,7 @@ public class HandleWhist extends Thread{
 		requestPlayer = null;
 		for(int i=0;i<4;i++){
 			playermap.put(i, players[i]);
+			playermap2.put(players[i], i);
 		}
 	}
 	
@@ -157,6 +159,29 @@ public class HandleWhist extends Thread{
 			System.out.println(playerMessages[i].getJSONString());
 			BackBone.sendMessage(BackBone.playerConnections.get(players[i]), playerMessages[i].getJSONString());
 		}
+	}
+
+	
+	//config sending messges
+	public void setSendingMessage(String message){
+		for(int i=0;i<4;i++){
+			this.playerMessages[i] = new SendingMessage(this,i,message);
+		}
+	}
+	
+	//send messages to all
+	public void sendToAll(){
+		for(int i=0;i<4;i++){
+			BackBone.sendMessage(BackBone.playerConnections.get(this.playermap.get(i)),
+					this.playerMessages[i].getJSONString());
+		}
+	}
+	
+	//send messages to selected
+	public void requestUpdate(String player){
+		BackBone.sendMessage(BackBone.playerConnections.get(player),
+				this.playerMessages[this.playermap2.get(player)].getJSONString());
+			
 	}
 	
 	

@@ -20,6 +20,7 @@ public class SendingMessage {
 	private int currentScore;
 	private Deck deck;
 	private String triumph;
+	private String player;
 	
 	
 	public SendingMessage(Deck deck,ArrayList<Integer> cards,String[] playerCards,boolean showHand,
@@ -38,6 +39,7 @@ public class SendingMessage {
 		this.card3 = playerCards[2];
 		this.card4 = playerCards[3];
 		this.triumph= deck.getSetOfCardNames().get(deck.getTriumph());
+		this.player = "not assigned";
 	}
 	
 	public SendingMessage(HandleWhist handle,int player,String message){
@@ -62,6 +64,7 @@ public class SendingMessage {
 			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[3]);
 		}
 		this.triumph = handle.getDeck().getSetOfCardNames().get(handle.getDeck().getTriumph());
+		this.player = handle.playermap.get(player);
 		
 	}
 	
@@ -82,6 +85,7 @@ public class SendingMessage {
 			object.put("mycard", this.card4);
 			object.put("message", this.message);
 			object.put("triumph", this.triumph);
+			object.put("player", this.player);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
