@@ -1,6 +1,8 @@
 package com.co324.whistgame;
 
 public enum CardPlay {
+	
+	
 	PONECHANCE{
 		CardPlay onPlay(HandleWhist handle){
 			handle.setSendingMessage("PlayerOne chance to play");
@@ -8,13 +10,16 @@ public enum CardPlay {
 			
 			
 			if(handle.getRequestPlayer().equals("playerOne")){
-				if(handle.getDeck().checkValidCard(0, handle.getCurrentPlayerCard())){
+				if(handle.getDeck().checkValidCard(0, handle.getCurrentPlayerCard()))	{
+					
+					
+					
 					handle.getTrickCards()[0]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());
 					handle.getDeck().removeCard(0, handle.getCurrentPlayerCard());
 					handle.setCurrentPlayerCard();
 					handle.setRequestPlayer();
 					
-					if((handle.getTrickWinnter()-1)%4==0){
+					if((handle.getTrickWinnter()+3)%4==0){
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
 						handle.getTrickWins()[player]++;
@@ -24,21 +29,31 @@ public enum CardPlay {
 						
 						
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						
+						///return to winning player
 						if(player == 0){
+							handle.setSendingMessage("PlayerOne chance to play");
+							handle.sendToAll();
 							return PONECHANCE;
 						}
 						else if(player == 1){
+							handle.setSendingMessage("PlayerTwo chance to play");
+							handle.sendToAll();
 							return PTWOCHANCE;
 						}
 						else if(player == 2){
+							handle.setSendingMessage("PlayerThree chance to play");
+							handle.sendToAll();
 							return PTHREECHANCE;
 						}
 						else if(player == 3){
+							handle.setSendingMessage("PlayerFour chance to play");
+							handle.sendToAll();
 							return PFOURCHANCE;
 						}	
 						
@@ -56,6 +71,8 @@ public enum CardPlay {
 			
 		}
 	},
+	
+	
 	PTWOCHANCE{
 		CardPlay onPlay(HandleWhist handle){
 			
@@ -65,14 +82,16 @@ public enum CardPlay {
 			
 			System.out.println(handle.getRequestPlayer() + " CHANCE two play");
 			if(handle.getRequestPlayer().equals("playerTwo")){
-				System.out.println("player Two ok");
 				if(handle.getDeck().checkValidCard(1, handle.getCurrentPlayerCard())){
+					
+					
+					
 					handle.getTrickCards()[1]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());
 					handle.getDeck().removeCard(1, handle.getCurrentPlayerCard());
 					handle.setCurrentPlayerCard();
 					handle.setRequestPlayer();
 					
-					if((handle.getTrickWinnter()-1)%4==1){
+					if((handle.getTrickWinnter()+3)%4==1){
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
 						handle.getTrickWins()[player]++;
@@ -81,22 +100,31 @@ public enum CardPlay {
 						handle.sendToAll();
 						
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						
+						///return to winning player
 						if(player == 0){
+							handle.setSendingMessage("PlayerOne chance to play");
+							handle.sendToAll();
 							return PONECHANCE;
 						}
 						else if(player == 1){
+							handle.setSendingMessage("PlayerTwo chance to play");
+							handle.sendToAll();
 							return PTWOCHANCE;
 						}
 						else if(player == 2){
+							handle.setSendingMessage("PlayerThree chance to play");
+							handle.sendToAll();
 							return PTHREECHANCE;
 						}
 						else if(player == 3){
+							handle.setSendingMessage("PlayerFour chance to play");
+							handle.sendToAll();
 							return PFOURCHANCE;
 						}	
 						
@@ -123,12 +151,15 @@ public enum CardPlay {
 			
 			if(handle.getRequestPlayer().equals("playerThree")){
 				if(handle.getDeck().checkValidCard(2, handle.getCurrentPlayerCard())){
+					
+					
+					
 					handle.getTrickCards()[2]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());
 					handle.getDeck().removeCard(2, handle.getCurrentPlayerCard());
 					handle.setCurrentPlayerCard();
 					handle.setRequestPlayer();
 					
-					if((handle.getTrickWinnter()-1)%4==2){
+					if((handle.getTrickWinnter()+3)%4==2){
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
 						handle.getTrickWins()[player]++;
@@ -137,25 +168,34 @@ public enum CardPlay {
 						handle.sendToAll();
 						
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						
 						
+						///return to winning player
 						if(player == 0){
+							handle.setSendingMessage("PlayerOne chance to play");
+							handle.sendToAll();
 							return PONECHANCE;
 						}
 						else if(player == 1){
+							handle.setSendingMessage("PlayerTwo chance to play");
+							handle.sendToAll();
 							return PTWOCHANCE;
 						}
 						else if(player == 2){
+							handle.setSendingMessage("PlayerThree chance to play");
+							handle.sendToAll();
 							return PTHREECHANCE;
 						}
 						else if(player == 3){
+							handle.setSendingMessage("PlayerFour chance to play");
+							handle.sendToAll();
 							return PFOURCHANCE;
-						}	
+						}		
 						
 					}
 					
@@ -180,14 +220,17 @@ public enum CardPlay {
 			
 			if(handle.getRequestPlayer().equals("playerFour")){
 				if(handle.getDeck().checkValidCard(3, handle.getCurrentPlayerCard())){
+					
+					
+					
 					handle.getTrickCards()[3]=handle.getDeck().decodeToCard(handle.getCurrentPlayerCard());
 					handle.getDeck().removeCard(3, handle.getCurrentPlayerCard());
 					handle.setCurrentPlayerCard();
 					handle.setRequestPlayer();
 					
-					System.out.println((handle.getTrickWinnter()-1)%4);
 					
-					if((handle.getTrickWinnter()-1)%4==3){
+					
+					if((handle.getTrickWinnter()+3)%4==3){
 						System.out.println("Trick winner entered");
 						int player = handle.checkWinTrick();
 						handle.setTrickWinner(player);
@@ -197,23 +240,32 @@ public enum CardPlay {
 						handle.sendToAll();
 						
 						try {
-							Thread.sleep(1000);
+							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 						
 						
+						///return to winning player
 						if(player == 0){
+							handle.setSendingMessage("PlayerOne chance to play");
+							handle.sendToAll();
 							return PONECHANCE;
 						}
 						else if(player == 1){
+							handle.setSendingMessage("PlayerTwo chance to play");
+							handle.sendToAll();
 							return PTWOCHANCE;
 						}
 						else if(player == 2){
+							handle.setSendingMessage("PlayerThree chance to play");
+							handle.sendToAll();
 							return PTHREECHANCE;
 						}
 						else if(player == 3){
+							handle.setSendingMessage("PlayerFour chance to play");
+							handle.sendToAll();
 							return PFOURCHANCE;
 						}	
 						

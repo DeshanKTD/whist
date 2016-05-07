@@ -96,13 +96,18 @@ public class Deck {
 	
 	
 	//check player has cards from current type
-	public boolean checkCardsInCorrectType(String currentType,String playedType, int player){
+	public boolean checkCardsInCorrectType(String currentType,String playedType, int player, int lastwinner){
 		int currenttype = decodeToCard(currentType)/13;
 		int playedtype = decodeToCard(playedType)/13;
+		System.out.println("entered correct check");
+		if(lastwinner == player){
+			return true;
+		}
 		
 		if(currenttype == playedtype){
 			return true;
 		}
+		
 		else{
 			for(int i=0;i<this.playersHand[player].size();i++){
 				if(this.playersHand[i].get(i)/13 == currenttype)

@@ -106,11 +106,26 @@ function PlayCard(card)
 
 
 <h3>Network card game</h3>
-<span data-bind="text: message" class="applicationmessages"></span> 
+<div style = "margin-left:20">
+<span data-bind="text: player" class="applicationmessages"></span>
+</div>
+<div style = "margin-left:20">
+<span data-bind="text: currentScore" class="applicationmessages"></span>
+</div>
+
+<div>
+<span data-bind="text: message" class="applicationmessages"></span>
+</div>
+
 <br/>
 <div id="play"></div>
+
+
+
 <!--cards-->
 <br/>
+
+
 <div data-bind="visible: shouldShowPlayedCards" id="playingBoard" class="center">
 
 	<div class = "position" style = "margin-left: 110px;" >
@@ -134,6 +149,11 @@ function PlayCard(card)
 	<!-- Player's Card -->
 	<div class = "position" style = "margin-left: 110px;">
 	<img data-bind="attr: { src: mycard }">
+	</div>
+	
+	<!-- trump -->
+	<div class = "position" style = "margin-left: 100px;">
+	<img data-bind="attr: { src: triumph }">
 	</div>
 </div> 
 <br/>
@@ -162,9 +182,12 @@ function AppViewModel() {
 	self.card2 = ko.observable("cards/0_1.png");
 	self.card3 = ko.observable("cards/0_1.png");
 	self.mycard = ko.observable("cards/0_1.png");
+	self.triumph = ko.observable("cards/0_1.png");
 	self.shouldShowHand = ko.observable(false);
 	self.shouldShowPlayedCards = ko.observable(false);	
 	self.message = ko.observable("waiting...");
+	self.player = ko.observable("not assingned...")
+	self.currentScore = ko.observable("0");
 }
 
 viewModel = new AppViewModel();
@@ -181,6 +204,9 @@ function Update(statusJSON)
 	viewModel.shouldShowHand(parsed.showHand);
 	viewModel.shouldShowPlayedCards(parsed.showCards);
 	viewModel.message(parsed.message);
+	viewModel.player(parsed.player);
+	viewModel.triumph(parsed.triumph);
+	viewMode.currentScore(parsed.currentScore);
 }
 
 </script>

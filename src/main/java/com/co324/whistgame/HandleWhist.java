@@ -278,10 +278,12 @@ public class HandleWhist extends Thread{
 	}
 
 	public void playingGame(){
+		play = play.onPlay(this);
+		System.out.println(play);
+		
 		if(checkWinner()){
 			return;
 		}
-		play = play.onPlay(this);
 		
 	}
 	
