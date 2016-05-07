@@ -1,8 +1,10 @@
 package com.co324.whistgame;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HandleWhist extends Thread{
+	public static ConcurrentHashMap<Integer,String> playermap = new ConcurrentHashMap<Integer,String>();
 	
 	private String players[] = {"playerOne","playerTwo","playerThree","playerFour"};
 	private int[] trickCards = new int[4];
@@ -12,6 +14,8 @@ public class HandleWhist extends Thread{
 	private int trickWinPlayer;
 	private int currentPlayingPlayer;
 	private SendingMessage[] playerMessages = new SendingMessage[4];
+	private String currentlyPlayedCard;
+	private String requestPlayer;
 	
 	private AccessCheck checkConnects = AccessCheck.ZEROCONNECTED;
 	private Deck deck;
@@ -20,6 +24,11 @@ public class HandleWhist extends Thread{
 		deck = new Deck();
 		startedPlayer = 0;
 		currentPlayingPlayer = 0;
+		currentlyPlayedCard = null;
+		requestPlayer = null;
+		for(int i=0;i<4;i++){
+			playermap.put(i, players[i]);
+		}
 	}
 	
 	
@@ -36,7 +45,7 @@ public class HandleWhist extends Thread{
 	
 	
 	//check whether four players connected
-	private void checkAllConnected(){
+	public void checkAllConnected(){
 		boolean set1 = false;
 		boolean set2 = false;
 		boolean set3 = false;
@@ -76,6 +85,70 @@ public class HandleWhist extends Thread{
 	}
 	
 	
+	//get Deck
+	public Deck getDeck(){
+		return this.deck;
+	}
+	
+	//set currentplayercard
+	synchronized public void setCurrentPlayerCard(String card){
+		if(this.currentlyPlayedCard==null){
+			this.currentlyPlayedCard=card;
+		}
+	}
+	
+	//get currentplayercard
+	synchronized public String getCurrentPlayerCard(){
+		return this.currentlyPlayedCard;
+	}
+	
+	//set request player
+	synchronized public void setRequestPlayer(String player){
+		if(this.requestPlayer==null){
+			this.requestPlayer=player;
+		}
+	}
+	
+	//get request player
+	synchronized public String getRequestPlayer(){
+		return this.requestPlayer;
+	}
+	
+	//get table
+	synchronized public int[] getTrickCards(){
+		return this.trickCards;
+	}
+	
+	//get trickWinplayr
+	synchronized public int getTrickWinnter(){
+		return this.trickWinPlayer;
+	}
+	
+	//get StartedPlayer
+	synchronized public int getRoundStarter(){
+		return this.startedPlayer;
+	}
+	
+	
+	//get trick wins
+	synchronized public int[] getTrickWins(){
+		return this.trickWins;
+	}
+	
+	//reset tablecards
+	public void resetTrickCards(){
+		for(int i=0;i<4;i++){
+			this.trickCards[i]=-1;
+		}
+	}
+	
+	//reset winner log
+	public void restTrickWins(){
+		for(int i=0;i<4;i++){
+			this.trickWins[i]=-1;
+		}
+	}
+	
 	//temporary hard coded
 	private void tempMethodToDistributeCards(){
 		for(int i=0;i<4;i++){
@@ -85,6 +158,8 @@ public class HandleWhist extends Thread{
 			BackBone.sendMessage(BackBone.playerConnections.get(players[i]), playerMessages[i].getJSONString());
 		}
 	}
+	
+	
 	
 	
 	///////////////////////////////////////////////////////////////////

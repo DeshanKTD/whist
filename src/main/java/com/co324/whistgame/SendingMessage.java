@@ -19,6 +19,7 @@ public class SendingMessage {
 	private boolean showLeaveGame;
 	private int currentScore;
 	private Deck deck;
+	private String triumph;
 	
 	
 	public SendingMessage(Deck deck,ArrayList<Integer> cards,String[] playerCards,boolean showHand,
@@ -36,8 +37,33 @@ public class SendingMessage {
 		this.card2 = playerCards[1];
 		this.card3 = playerCards[2];
 		this.card4 = playerCards[3];
+		this.triumph= deck.getSetOfCardNames().get(deck.getTriumph());
 	}
 	
+	public SendingMessage(HandleWhist handle,int player,String message){
+		this.cards = handle.getDeck().getPlayersHand()[player];
+		this.showCards = true;
+		this.showHand = true;
+		this.showNewGame = false;
+		this.showLeaveGame = false;
+		this.message =message;
+		this.currentScore = handle.getTrickWins()[player];
+		
+		if(handle.getTrickCards()[0]>-1){
+			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[0]);
+		}
+		if(handle.getTrickCards()[1]>-1){
+			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[1]);
+		}
+		if(handle.getTrickCards()[2]>-1){
+			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[2]);
+		}
+		if(handle.getTrickCards()[3]>-1){
+			this.card1=handle.getDeck().getSetOfCardNames().get(handle.getTrickCards()[3]);
+		}
+		this.triumph = handle.getDeck().getSetOfCardNames().get(handle.getDeck().getTriumph());
+		
+	}
 	
 	
 	
@@ -55,6 +81,7 @@ public class SendingMessage {
 			object.put("card3", this.card3);
 			object.put("mycard", this.card4);
 			object.put("message", this.message);
+			object.put("triumph", this.triumph);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

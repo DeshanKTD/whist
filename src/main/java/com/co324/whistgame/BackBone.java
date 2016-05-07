@@ -56,9 +56,12 @@ public class BackBone extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException 
 	{
+		HttpSession session = request.getSession(  );
 		System.out.print("post req");
 		if(!checkSession(request,response)){
+			this.handleGame.setRequestPlayer((String) session.getAttribute("userID"));
 			System.out.println(request.getParameter("card"));
+			this.handleGame.setCurrentPlayerCard(request.getParameter("card"));
 		}
 		
 	}
@@ -155,6 +158,16 @@ public class BackBone extends HttpServlet{
 			playerConnections.put(players[counter-1], ac);
 			System.out.println("HashMap : "+BackBone.playerConnections.size());
 			//this.handleGame.getAccessStatus().onConnect(players);
+		}
+	}
+	
+	//check whether all players are still connected
+	public static boolean checkPlayersOnline(){
+		if(playerConnections.size()==4){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 	
