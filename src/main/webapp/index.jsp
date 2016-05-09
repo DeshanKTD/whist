@@ -163,11 +163,13 @@ function PlayCard(card)
 <br/>
 
 <!-- TODO: These should be done automatically -->
+<!--  
 <button onclick = "Update(json1)"> Loading view </button>
 <button onclick = "Update(json3)"> Play card view </button>
 <button onclick = "Update(json4)"> Wait for others </button>
 <button onclick = "Update(json5)"> Finish hand </button>
 <button onclick = "Update(json6)"> Start View </button>
+-->
 <script>
 
 // This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
@@ -206,7 +208,7 @@ function Update(statusJSON)
 	viewModel.message(parsed.message);
 	viewModel.player(parsed.player);
 	viewModel.triumph(parsed.triumph);
-	viewMode.currentScore(parsed.currentScore);
+	viewModel.currentScore(parsed.currentScore);
 }
 
 </script>
