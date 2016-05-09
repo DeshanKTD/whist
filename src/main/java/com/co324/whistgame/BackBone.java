@@ -133,7 +133,7 @@ public class BackBone extends HttpServlet{
 			try {
 				System.out.println("sending data");
 				PrintWriter writer = response.getWriter();
-				writer.write("data: "+ players[counter-1] +"\n\n");
+				writer.write("data: reconnects\n\n");
 				writer.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
