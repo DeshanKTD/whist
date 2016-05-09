@@ -87,6 +87,7 @@ public class BackBone extends HttpServlet{
 		else{
 			System.out.println("session exists");
 			System.out.println(connection);
+			processRequset(request,response,this.connection);
 			this.handleGame.requestUpdate(this.connection);
 			
 			return false;
@@ -118,7 +119,32 @@ public class BackBone extends HttpServlet{
 		checkAsync(request);
 	}
 	
+	//
+	//process sse for second request
+		protected void processRequset(HttpServletRequest request, HttpServletResponse response,String player ){
+			
+			// This a Tomcat specific - makes request asynchronous
+			request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);
+			
+			response.setContentType("text/event-stream");	
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Connection", "keep-alive");
+			
+			try {
+				System.out.println("sending data");
+				PrintWriter writer = response.getWriter();
+				writer.write("data: "+ players[counter-1] +"\n\n");
+				writer.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+			checkAsync(request,player);
+		}
 	
+		
+		
 	//send message
 	public static void sendMessage(AsyncContext async,String message){
 		PrintWriter writer;
@@ -168,7 +194,34 @@ public class BackBone extends HttpServlet{
 		}
 	}
 	
-	
+	//for 2nd connections
+	private void checkAsync(HttpServletRequest request,String name ){
+		
+		final AsyncContext ac = request.startAsync();
+		ac.setTimeout(900000000);
+		ac.addListener(new AsyncListener(){
+			 public void onComplete(AsyncEvent event) throws IOException {
+				 //	playerConnections.remove(connection);
+	         }
+	         public void onError(AsyncEvent event) throws IOException {
+	        	 	//playerConnections.remove(connection);
+	         }
+	         public void onStartAsync(AsyncEvent event) throws IOException {
+	                // Do nothing
+	         }
+	         public void onTimeout(AsyncEvent event) throws IOException {
+	            	//playerConnections.remove(connection);
+	         }
+		});
+		
+		System.out.println("access async");
+		//add current connections to a hashmap
+		synchronized(connectionLock){
+			playerConnections.put(name, ac);
+			System.out.println("HashMap : "+BackBone.playerConnections.size());
+			//this.handleGame.getAccessStatus().onConnect(players);
+		}
+	}
 	
 	
 	
