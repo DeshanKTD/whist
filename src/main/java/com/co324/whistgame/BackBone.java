@@ -14,8 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
+
 
 
 public class BackBone extends HttpServlet{
@@ -50,6 +49,7 @@ public class BackBone extends HttpServlet{
 			processRequset(request,response);
 		}
 	}
+	
 	
 	//handle ajax
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -87,13 +87,16 @@ public class BackBone extends HttpServlet{
 		else{
 			System.out.println("session exists");
 			System.out.println(connection);
-			processRequset(request,response,this.connection);
-			this.handleGame.requestUpdate(this.connection);
+			if(request.getMethod().equals("GET")){
+				processRequset(request,response,this.connection);
+				this.handleGame.requestUpdate(this.connection);
+			}
 			
 			return false;
 		}
 		
 	}
+	
 	
 	
 	//process sse
@@ -121,7 +124,7 @@ public class BackBone extends HttpServlet{
 	
 	//
 	//process sse for second request
-		protected void processRequset(HttpServletRequest request, HttpServletResponse response,String player ){
+	protected void processRequset(HttpServletRequest request, HttpServletResponse response,String player ){
 			
 			// This a Tomcat specific - makes request asynchronous
 			request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);
